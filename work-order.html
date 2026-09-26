@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Order | ASIM BHARAT AIPC SYSTEM</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0b1220;color:#fff;}
+header{background:#0f172a;padding:15px;text-align:center;border-bottom:2px solid #16a34a;}
+header h1{color:#22c55e;}
+.container{max-width:700px;margin:auto;padding:15px;}
+.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:15px;}
+label{display:block;margin-top:12px;margin-bottom:5px;font-size:14px;}
+input,select,textarea{
+width:100%;
+padding:10px;
+border:none;
+border-radius:8px;
+background:#0f172a;
+color:#fff;
+}
+textarea{height:80px;resize:vertical;}
+button{
+width:100%;
+padding:12px;
+margin-top:20px;
+background:#16a34a;
+color:#fff;
+border:none;
+border-radius:10px;
+font-size:15px;
+cursor:pointer;
+}
+.back{
+display:block;
+text-align:center;
+margin-top:18px;
+color:#60a5fa;
+text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Work Order</h1>
+<p>Tea Garden Industrial Electrical Maintenance</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<label>Work Order No.</label>
+<input type="text" value="WO-2026-001" readonly>
+
+<label>Equipment ID</label>
+<input type="text" placeholder="Example: MTR-001">
+
+<label>Equipment Type</label>
+<select>
+<option>Motor</option>
+<option>PLC</option>
+<option>VFD</option>
+<option>Control Panel</option>
+<option>Transformer</option>
+<option>Generator</option>
+</select>
+
+<label>Assign To</label>
+<input type="text" placeholder="Electrician Name">
+
+<label>Priority</label>
+<select>
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+<option>Critical</option>
+</select>
+
+<label>Due Date</label>
+<input type="date">
+
+<label>Work Description</label>
+<textarea placeholder="Write work details..."></textarea>
+
+<button onclick="createWorkOrder()">Create Work Order</button>
+
+</div>
+
+<a href="super-admin-dashboard.html" class="back">← Back to Dashboard</a>
+
+</div>
+
+<script>
+function createWorkOrder(){
+alert("Work Order Created Successfully");
+}
+</script>
+
+</body>
+</html>
