@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakdown Report | ASIM BHARAT AIPC SYSTEM</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0b1220;color:#fff;}
+header{background:#0f172a;padding:15px;text-align:center;border-bottom:2px solid #dc2626;}
+header h1{color:#22c55e;}
+.container{max-width:700px;margin:auto;padding:15px;}
+.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:15px;}
+label{display:block;margin-top:12px;margin-bottom:5px;font-size:14px;}
+input,select,textarea{
+width:100%;
+padding:10px;
+border:none;
+border-radius:8px;
+background:#0f172a;
+color:#fff;
+}
+textarea{height:90px;resize:vertical;}
+button{
+width:100%;
+padding:12px;
+margin-top:20px;
+background:#dc2626;
+color:#fff;
+border:none;
+border-radius:10px;
+font-size:15px;
+cursor:pointer;
+}
+button:hover{background:#b91c1c;}
+.back{
+display:block;
+text-align:center;
+margin-top:18px;
+color:#60a5fa;
+text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Breakdown Report</h1>
+<p>Tea Garden Industrial Electrical Maintenance</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<label>Equipment ID</label>
+<input type="text" placeholder="Example: MTR-001">
+
+<label>Equipment Type</label>
+<select>
+<option>Motor</option>
+<option>PLC</option>
+<option>VFD</option>
+<option>Control Panel</option>
+<option>Transformer</option>
+<option>Generator</option>
+<option>Substation</option>
+</select>
+
+<label>Breakdown Date</label>
+<input type="date">
+
+<label>Breakdown Time</label>
+<input type="time">
+
+<label>Priority</label>
+<select>
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+<option>Critical</option>
+</select>
+
+<label>Fault Description</label>
+<textarea placeholder="Write fault details..."></textarea>
+
+<label>Action Taken</label>
+<textarea placeholder="Write action taken..."></textarea>
+
+<label>Technician Name</label>
+<input type="text" placeholder="Enter technician name">
+
+<label>Upload Photo</label>
+<input type="file" accept="image/*">
+
+<button onclick="saveReport()">Submit Breakdown Report</button>
+
+</div>
+
+<a href="super-admin-dashboard.html" class="back">← Back to Dashboard</a>
+
+</div>
+
+<script>
+function saveReport(){
+alert("Breakdown Report Submitted Successfully");
+}
+</script>
+
+</body>
+</html>
