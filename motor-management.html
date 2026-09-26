@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor Management | ASIM BHARAT AIPC SYSTEM</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0b1220;color:#fff;}
+header{background:#0f172a;padding:15px;text-align:center;border-bottom:2px solid #16a34a;}
+header h1{color:#22c55e;}
+.container{padding:15px;}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:15px;}
+.box{background:#1e293b;padding:12px;border-radius:10px;text-align:center;border:1px solid #334155;}
+.box h2{color:#22c55e;font-size:22px;}
+table{width:100%;border-collapse:collapse;background:#1e293b;border-radius:12px;overflow:hidden;}
+th,td{padding:10px;border-bottom:1px solid #334155;text-align:left;font-size:13px;}
+th{background:#0f172a;color:#22c55e;}
+.running{color:#22c55e;font-weight:bold;}
+.stop{color:#ef4444;font-weight:bold;}
+.back{display:block;text-align:center;margin-top:18px;color:#60a5fa;text-decoration:none;}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Motor Management</h1>
+<p>Tea Garden Industrial Electrical Maintenance</p>
+</header>
+
+<div class="container">
+
+<div class="summary">
+<div class="box"><h2>24</h2><p>Total Motors</p></div>
+<div class="box"><h2>18</h2><p>Running</p></div>
+<div class="box"><h2>6</h2><p>Stopped</p></div>
+<div class="box"><h2>2</h2><p>Fault</p></div>
+</div>
+
+<table>
+<tr>
+<th>Motor ID</th>
+<th>HP</th>
+<th>Location</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>MTR-001</td>
+<td>15 HP</td>
+<td>Withering Fan</td>
+<td class="running">Running</td>
+</tr>
+
+<tr>
+<td>MTR-002</td>
+<td>20 HP</td>
+<td>CTC Machine</td>
+<td class="running">Running</td>
+</tr>
+
+<tr>
+<td>MTR-003</td>
+<td>5 HP</td>
+<td>Water Pump</td>
+<td class="stop">Stopped</td>
+</tr>
+
+<tr>
+<td>MTR-004</td>
+<td>30 HP</td>
+<td>Exhaust Fan</td>
+<td class="running">Running</td>
+</tr>
+
+</table>
+
+<a href="super-admin-dashboard.html" class="back">← Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
