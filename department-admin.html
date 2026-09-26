@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Department Admin | ASIM BHARAT AIPC SYSTEM</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0b1220;color:white;}
+header{background:#0f172a;padding:15px;border-bottom:2px solid #16a34a;text-align:center;}
+header h1{color:#22c55e;font-size:22px;}
+.container{padding:15px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;}
+.card{background:#1e293b;padding:18px;border-radius:12px;text-align:center;border:1px solid #334155;cursor:pointer;}
+.card:hover{border-color:#22c55e;}
+.card h3{margin-top:10px;font-size:15px;}
+.back{display:block;text-align:center;margin-top:20px;color:#60a5fa;text-decoration:none;}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Department Admin Dashboard</h1>
+<p>Tea Garden Industrial Electrical Maintenance</p>
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+<div class="card" onclick="location.href='plc-panel.html'">
+<div style="font-size:35px;">⚙️</div>
+<h3>PLC</h3>
+</div>
+
+<div class="card" onclick="location.href='motor-management.html'">
+<div style="font-size:35px;">🔧</div>
+<h3>Motor</h3>
+</div>
+
+<div class="card" onclick="location.href='maintenance-schedule.html'">
+<div style="font-size:35px;">📅</div>
+<h3>Maintenance</h3>
+</div>
+
+<div class="card" onclick="location.href='inventory.html'">
+<div style="font-size:35px;">📦</div>
+<h3>Inventory</h3>
+</div>
+
+<div class="card" onclick="location.href='safety-checklist.html'">
+<div style="font-size:35px;">🦺</div>
+<h3>Safety</h3>
+</div>
+
+</div>
+
+<a href="super-admin-dashboard.html" class="back">← Back to Super Admin</a>
+
+</div>
+
+</body>
+</html>
