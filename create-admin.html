@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Admin | ASIM BHARAT AIPC SYSTEM</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0b1220;color:white;}
+.container{max-width:600px;margin:20px auto;padding:20px;}
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+border:1px solid #334155;
+}
+h1{text-align:center;color:#22c55e;margin-bottom:20px;}
+label{display:block;margin:12px 0 5px;}
+input,select{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:none;
+background:#0f172a;
+color:white;
+}
+button{
+width:100%;
+padding:12px;
+margin-top:20px;
+background:#16a34a;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
+button:hover{background:#15803d;}
+.back{
+display:block;
+text-align:center;
+margin-top:15px;
+color:#60a5fa;
+text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<h1>Create Admin</h1>
+
+<label>Full Name</label>
+<input type="text" placeholder="Enter Full Name">
+
+<label>Email</label>
+<input type="email" placeholder="Enter Email">
+
+<label>Mobile</label>
+<input type="tel" placeholder="Enter Mobile Number">
+
+<label>Role</label>
+<select>
+<option>Department Admin</option>
+<option>Electrical Admin</option>
+<option>Maintenance Admin</option>
+<option>Inventory Admin</option>
+<option>Safety Admin</option>
+</select>
+
+<label>Password</label>
+<input type="password" placeholder="Create Password">
+
+<button onclick="createAdmin()">Create Admin</button>
+
+<a href="super-admin-dashboard.html" class="back">← Back to Dashboard</a>
+
+</div>
+</div>
+
+<script>
+function createAdmin(){
+alert("Admin Created Successfully (Demo)");
+}
+</script>
+
+</body>
+</html>
