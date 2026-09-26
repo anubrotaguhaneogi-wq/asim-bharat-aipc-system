@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASIM BHARAT | Register</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.register-box{
+max-width:450px;
+margin:40px auto;
+padding:30px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(18px);
+border-radius:22px;
+border:1px solid rgba(255,255,255,.15);
+}
+.register-box h2{
+text-align:center;
+margin-bottom:20px;
+font-family:Orbitron,sans-serif;
+color:#00E5FF;
+}
+.register-box input,.register-box select{
+width:100%;
+padding:14px;
+margin:10px 0;
+border:none;
+border-radius:12px;
+background:#1a2b34;
+color:white;
+}
+.register-box button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#00E5FF,#00FF9D);
+font-weight:bold;
+cursor:pointer;
+}
+.note{
+text-align:center;
+margin-top:15px;
+font-size:14px;
+color:#BFD5D8;
+}
+.note a{
+color:#00E5FF;
+text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-glow"></div>
+
+<div class="register-box">
+
+<h2>CREATE ACCOUNT</h2>
+
+<input type="text" id="name" placeholder="Full Name">
+
+<input type="text" id="mobile" placeholder="Mobile Number">
+
+<input type="email" id="email" placeholder="Email Address">
+
+<input type="password" id="password" placeholder="Password">
+
+<input type="password" id="confirmPassword" placeholder="Confirm Password">
+
+<select id="role">
+<option value="Worker">Tea Garden Worker</option>
+<option value="Technician">Electrical Technician</option>
+<option value="Supervisor">Supervisor</option>
+<option value="Engineer">Engineer</option>
+</select>
+
+<button onclick="register()">CREATE ACCOUNT</button>
+
+<div class="note">
+Already have an account?
+<a href="login.html">Login</a>
+</div>
+
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
+
+</body>
+</html>
