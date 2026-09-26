@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASIM BHARAT | Admin Login</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.admin-box{
+max-width:430px;
+margin:60px auto;
+padding:30px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(18px);
+border-radius:22px;
+border:1px solid rgba(255,255,255,.15);
+}
+.admin-box h2{
+text-align:center;
+color:#00E5FF;
+font-family:Orbitron,sans-serif;
+margin-bottom:20px;
+}
+.admin-box input{
+width:100%;
+padding:14px;
+margin:10px 0;
+border:none;
+border-radius:12px;
+background:#1a2b34;
+color:white;
+}
+.admin-box button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#00E5FF,#00FF9D);
+font-weight:bold;
+cursor:pointer;
+}
+.note{
+text-align:center;
+margin-top:15px;
+color:#8FAFB5;
+font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-glow"></div>
+
+<div class="admin-box">
+
+<h2>SUPER ADMIN LOGIN</h2>
+
+<input type="email" id="adminEmail" placeholder="Admin Email">
+
+<input type="password" id="adminPassword" placeholder="Admin Password">
+
+<button onclick="adminLogin()">LOGIN</button>
+
+<div class="note">
+Only Authorized Super Admin
+</div>
+
+</div>
+
+<script>
+function adminLogin(){
+
+const email=document.getElementById("adminEmail").value;
+const password=document.getElementById("adminPassword").value;
+
+if(email==="admin@asimbharat.com" && password==="Admin123"){
+
+localStorage.setItem("SUPER_ADMIN","true");
+
+window.location.href="super-admin-dashboard.html";
+
+}else{
+
+alert("Invalid Admin Login");
+
+}
+
+}
+</script>
+
+</body>
+</html>
