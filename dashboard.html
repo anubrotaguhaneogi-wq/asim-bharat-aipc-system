@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASIM BHARAT | Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.dashboard{padding:20px;max-width:1200px;margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:25px}
+.topbar h1{font-family:Orbitron,sans-serif;color:#00E5FF}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px}
+.card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(16px);
+border:1px solid rgba(255,255,255,.1);
+border-radius:22px;
+padding:22px;
+text-align:center;
+transition:.3s;
+cursor:pointer;
+}
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 0 25px rgba(0,229,255,.25);
+}
+.icon{font-size:40px}
+.status{
+margin-top:25px;
+background:rgba(255,255,255,.06);
+padding:18px;
+border-radius:18px;
+}
+.live{color:#00FF9D;font-weight:bold}
+.logout{
+padding:10px 18px;
+border:none;
+border-radius:12px;
+background:#ff4d4d;
+color:white;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body onload="loadUser()">
+
+<div class="background-glow"></div>
+
+<div class="dashboard">
+
+<div class="topbar">
+<div>
+<h1>AIPC CONTROL CENTER</h1>
+<p id="welcome">Welcome</p>
+</div>
+<button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<div class="grid">
+
+<div class="card" onclick="location.href='plc-panel.html'">
+<div class="icon">⚙️</div>
+<h3>PLC Panel</h3>
+<p>Automation</p>
+</div>
+
+<div class="card" onclick="location.href='motor-management.html'">
+<div class="icon">⚡</div>
+<h3>Motor Health</h3>
+<p>Live Status</p>
+</div>
+
+<div class="card" onclick="location.href='vfd-system.html'">
+<div class="icon">🔄</div>
+<h3>VFD System</h3>
+<p>Speed Control</p>
+</div>
+
+<div class="card" onclick="location.href='scada.html'">
+<div class="icon">📡</div>
+<h3>SCADA</h3>
+<p>Remote Monitor</p>
+</div>
+
+<div class="card" onclick="location.href='work-order.html'">
+<div class="icon">📋</div>
+<h3>Work Order</h3>
+<p>Assign Job</p>
+</div>
+
+<div class="card" onclick="location.href='breakdown-report.html'">
+<div class="icon">🚨</div>
+<h3>Breakdown</h3>
+<p>Emergency</p>
+</div>
+
+<div class="card" onclick="location.href='inventory.html'">
+<div class="icon">📦</div>
+<h3>Inventory</h3>
+<p>Store</p>
+</div>
+
+<div class="card" onclick="location.href='safety-checklist.html'">
+<div class="icon">🛡️</div>
+<h3>Safety</h3>
+<p>Checklist</p>
+</div>
+
+</div>
+
+<div class="status">
+<h2>Live System Status</h2>
+<p>Power Supply: <span class="live">ONLINE</span></p>
+<p>PLC Communication: <span class="live">ACTIVE</span></p>
+<p>SCADA Server: <span class="live">CONNECTED</span></p>
+<p>Today's Maintenance Jobs: <span class="live">12</span></p>
+</div>
+
+</div>
+
+<script src="auth.js"></script>
+
+<script>
+requireLogin();
+function loadUser(){
+const user=currentUser();
+if(user){
+document.getElementById("welcome").innerText="Welcome, "+user.name;
+}
+}
+</script>
+
+</body>
+</html>
