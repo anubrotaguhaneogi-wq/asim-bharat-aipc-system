@@ -1,0 +1,120 @@
+:root{
+  --bg:#06141B;
+  --card:#11212D;
+  --glass:rgba(255,255,255,.08);
+  --text:#EAF4F4;
+  --accent:#00E5FF;
+  --accent2:#00FF9D;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:Inter,sans-serif;
+  background:linear-gradient(180deg,#06141B,#11212D);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+.background-glow{
+  position:fixed;
+  width:420px;
+  height:420px;
+  background:radial-gradient(circle,var(--accent),transparent 70%);
+  top:-120px;
+  right:-120px;
+  opacity:.35;
+  filter:blur(70px);
+  z-index:-1;
+}
+
+.hero{
+  text-align:center;
+  padding:70px 20px;
+}
+
+.top-badge{
+  display:inline-block;
+  padding:8px 16px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:50px;
+  background:var(--glass);
+  margin-bottom:20px;
+}
+
+.hero h1{
+  font-family:Orbitron,sans-serif;
+  font-size:42px;
+  line-height:1.1;
+}
+
+.hero h1 span{
+  display:block;
+  color:var(--accent);
+}
+
+.hero p{
+  margin:18px auto;
+  max-width:620px;
+  color:#BFD5D8;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
+
+button{
+  padding:14px 28px;
+  border:none;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.primary{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#06141B;
+}
+
+.secondary{
+  background:var(--glass);
+  color:white;
+  border:1px solid rgba(255,255,255,.2);
+}
+
+.quick-panel{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:18px;
+  padding:30px 20px 60px;
+}
+
+.panel-card{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;
+  padding:24px;
+  text-align:center;
+  transition:.3s;
+}
+
+.panel-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 0 25px rgba(0,229,255,.25);
+}
+
+.panel-card h3{
+  margin:10px 0;
+}
+
+footer{
+  text-align:center;
+  padding:30px;
+  color:#8FAFB5;
+}
