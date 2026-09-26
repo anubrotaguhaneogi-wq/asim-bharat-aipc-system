@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASIM BHARAT AIPC SYSTEM | Super Admin</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0b1220;color:white;}
+header{
+background:#0f172a;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:2px solid #16a34a;
+}
+header h1{font-size:20px;color:#22c55e;}
+header span{font-size:14px;color:#cbd5e1;}
+.container{padding:15px;}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:15px;
+}
+.card{
+background:#1e293b;
+padding:18px;
+border-radius:12px;
+text-align:center;
+border:1px solid #334155;
+transition:.3s;
+cursor:pointer;
+}
+.card:hover{
+transform:translateY(-4px);
+border-color:#22c55e;
+}
+.card h3{font-size:15px;margin-top:10px;}
+.status{
+background:#052e16;
+border:1px solid #22c55e;
+padding:15px;
+border-radius:12px;
+margin-bottom:20px;
+}
+footer{
+margin-top:25px;
+padding:15px;
+text-align:center;
+color:#94a3b8;
+font-size:13px;
+}
+button{
+width:100%;
+padding:12px;
+margin-top:20px;
+background:#dc2626;
+color:white;
+border:none;
+border-radius:10px;
+font-size:15px;
+cursor:pointer;
+}
+button:hover{background:#b91c1c;}
+</style>
+</head>
+
+<body>
+
+<header>
+<div>
+<h1>ASIM BHARAT AIPC SYSTEM</h1>
+<span>Super Admin Dashboard</span>
+</div>
+<div>🟢 Online</div>
+</header>
+
+<div class="container">
+
+<div class="status">
+<h2>Factory Live Status</h2>
+<p>Tea Garden Industrial Electrical Maintenance System Running</p>
+</div>
+
+<div class="grid">
+
+<div class="card" onclick="location.href='create-admin.html'">
+<div style="font-size:35px;">👤</div>
+<h3>Create Admin</h3>
+</div>
+
+<div class="card" onclick="location.href='admin-list.html'">
+<div style="font-size:35px;">📋</div>
+<h3>Admin List</h3>
+</div>
+
+<div class="card" onclick="location.href='plc-panel.html'">
+<div style="font-size:35px;">⚙️</div>
+<h3>PLC Panel</h3>
+</div>
+
+<div class="card" onclick="location.href='motor-management.html'">
+<div style="font-size:35px;">🔧</div>
+<h3>Motor</h3>
+</div>
+
+<div class="card" onclick="location.href='vfd-system.html'">
+<div style="font-size:35px;">⚡</div>
+<h3>VFD</h3>
+</div>
+
+<div class="card" onclick="location.href='scada.html'">
+<div style="font-size:35px;">🖥️</div>
+<h3>SCADA</h3>
+</div>
+
+<div class="card" onclick="location.href='maintenance-schedule.html'">
+<div style="font-size:35px;">📅</div>
+<h3>Maintenance</h3>
+</div>
+
+<div class="card" onclick="location.href='inventory.html'">
+<div style="font-size:35px;">📦</div>
+<h3>Inventory</h3>
+</div>
+
+<div class="card" onclick="location.href='safety-checklist.html'">
+<div style="font-size:35px;">🦺</div>
+<h3>Safety</h3>
+</div>
+
+<div class="card" onclick="location.href='analytics.html'">
+<div style="font-size:35px;">📊</div>
+<h3>Reports</h3>
+</div>
+
+<div class="card" onclick="location.href='ai-assistant.html'">
+<div style="font-size:35px;">🤖</div>
+<h3>AI Assistant</h3>
+</div>
+
+<div class="card" onclick="location.href='settings.html'">
+<div style="font-size:35px;">⚙️</div>
+<h3>Settings</h3>
+</div>
+
+</div>
+
+<button onclick="logout()">Logout</button>
+
+</div>
+
+<footer>
+ASIM BHARAT AIPC SYSTEM • Tea Garden Industrial Electrical Maintenance
+</footer>
+
+<script>
+function logout(){
+localStorage.removeItem("adminSession");
+location.href="login.html";
+}
+</script>
+
+</body>
+</html>
