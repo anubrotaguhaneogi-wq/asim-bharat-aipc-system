@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASIM BHARAT | Profile</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.profile-container{
+max-width:700px;
+margin:40px auto;
+padding:25px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(18px);
+border-radius:24px;
+border:1px solid rgba(255,255,255,.15);
+}
+.profile-header{
+text-align:center;
+margin-bottom:30px;
+}
+.avatar{
+width:120px;
+height:120px;
+border-radius:50%;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:50px;
+background:linear-gradient(135deg,#00E5FF,#00FF9D);
+color:#06141B;
+font-weight:bold;
+box-shadow:0 0 25px rgba(0,229,255,.4);
+}
+.profile-header h2{
+margin-top:15px;
+font-family:Orbitron,sans-serif;
+color:#00E5FF;
+}
+.info-card{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.1);
+border-radius:18px;
+padding:18px;
+margin:15px 0;
+}
+.label{
+font-size:13px;
+color:#8FAFB5;
+}
+.value{
+font-size:18px;
+font-weight:bold;
+margin-top:5px;
+}
+.btn-group{
+display:flex;
+gap:12px;
+margin-top:25px;
+flex-wrap:wrap;
+}
+.btn{
+flex:1;
+padding:14px;
+border:none;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+}
+.edit{
+background:linear-gradient(90deg,#00E5FF,#00FF9D);
+color:#06141B;
+}
+.logout{
+background:#ff4d4d;
+color:white;
+}
+</style>
+</head>
+
+<body onload="loadProfile()">
+
+<div class="background-glow"></div>
+
+<div class="profile-container">
+
+<div class="profile-header">
+
+<div class="avatar" id="avatar">A</div>
+
+<h2 id="userName">Loading...</h2>
+
+<p id="userRole">Role</p>
+
+</div>
+
+<div class="info-card">
+<div class="label">Mobile Number</div>
+<div class="value" id="userMobile">-</div>
+</div>
+
+<div class="info-card">
+<div class="label">Email Address</div>
+<div class="value" id="userEmail">-</div>
+</div>
+
+<div class="info-card">
+<div class="label">Account Status</div>
+<div class="value" id="userStatus">Active</div>
+</div>
+
+<div class="btn-group">
+
+<button class="btn edit" onclick="alert('Edit Profile Coming Soon')">
+EDIT PROFILE
+</button>
+
+<button class="btn logout" onclick="logout()">
+LOGOUT
+</button>
+
+</div>
+
+</div>
+
+<script src="auth.js"></script>
+
+<script>
+requireLogin();
+
+function loadProfile(){
+
+const user=currentUser();
+
+if(!user)return;
+
+document.getElementById("userName").innerText=user.name;
+document.getElementById("userRole").innerText=user.role;
+document.getElementById("userMobile").innerText=user.mobile;
+document.getElementById("userEmail").innerText=user.email;
+document.getElementById("userStatus").innerText=user.status;
+
+document.getElementById("avatar").innerText=user.name.charAt(0).toUpperCase();
+
+}
+</script>
+
+</body>
+</html>
