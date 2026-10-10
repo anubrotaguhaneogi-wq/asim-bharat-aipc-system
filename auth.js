@@ -49,8 +49,9 @@ function isValidEmail(email) {
 }
 
 function isValidMobile(mobile) {
-  return /^01[3-9]\d{8}$/.test(mobile); // বাংলাদেশি মোবাইল
+  return /^(?:\+?91|0)?[6-9]\d{9}$|^01[3-9]\d{8}$/.test(mobile);
 }
+
 
 function isStrongPassword(password) {
   return password.length >= CONFIG.MIN_PASSWORD_LENGTH;
