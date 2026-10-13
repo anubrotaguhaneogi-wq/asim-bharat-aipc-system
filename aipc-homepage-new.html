@@ -668,3 +668,203 @@
         <div class="qico">⛽</div><b>POWER &amp; FUEL CONTROL</b><small>Energy &amp; Fuel</small>
       </div>
       <div class="quick" onclick="openInfo('
+      <!--
+AIPC HOMEPAGE — FINAL END CODE
+Line 670 পর্যন্ত পুরনো কোড অপরিবর্তিত।
+Line 671 থেকে Final Homepage End Code যুক্ত করা হয়েছে।
+Added: Quick Cards, Workflow, Action Area, Info Modal,
+Modal Functions, ESC/Outside Click Close, Footer এবং Final HTML Closing Tags.
+Backup: aipc-homepage-new-BACKUP.html
+-->                                     
+      <div class="quick" onclick="openInfo('Preventive Maintenance','Plan preventive maintenance activities, service schedules and equipment health checks.')">
+        <div class="qico">🛠️</div>
+        <b>PREVENTIVE MAINTENANCE</b>
+        <small>Service • Planning • Health</small>
+      </div>
+
+      <div class="quick" onclick="openInfo('Fault & Safety','Monitor equipment faults, warnings and safety-related maintenance actions.')">
+        <div class="qico">🚨</div>
+        <b>FAULT &amp; SAFETY</b>
+        <small>Alerts • Warnings • Safety</small>
+      </div>
+
+      <div class="quick" onclick="openInfo('Reports & Analytics','Review equipment performance, uptime, downtime, maintenance and consumption information.')">
+        <div class="qico">📊</div>
+        <b>REPORTS &amp; ANALYTICS</b>
+        <small>Performance • Reports</small>
+      </div>
+
+      <div class="quick" onclick="openInfo('AIPC Dashboard','Open the main AIPC operational dashboard for equipment monitoring and system control.')">
+        <div class="qico">📡</div>
+        <b>AIPC DASHBOARD</b>
+        <small>Live Monitoring • Control</small>
+      </div>
+    </div>
+
+    <!-- SYSTEM WORKFLOW -->
+    <section class="workflow">
+      <div class="section-title">
+        <span>⚙️</span>
+        <div>
+          <b>AIPC OPERATION WORKFLOW</b>
+          <small>Monitor → Prevent → Alert → Report</small>
+        </div>
+      </div>
+
+      <div class="workflow-grid">
+        <div class="workflow-step">
+          <span>01</span>
+          <b>MONITOR</b>
+          <small>Equipment &amp; electrical status</small>
+        </div>
+
+        <div class="workflow-step">
+          <span>02</span>
+          <b>ANALYZE</b>
+          <small>Power, fuel &amp; performance</small>
+        </div>
+
+        <div class="workflow-step">
+          <span>03</span>
+          <b>PREVENT</b>
+          <small>Planned maintenance actions</small>
+        </div>
+
+        <div class="workflow-step">
+          <span>04</span>
+          <b>ALERT</b>
+          <small>Fault &amp; safety warnings</small>
+        </div>
+
+        <div class="workflow-step">
+          <span>05</span>
+          <b>REPORT</b>
+          <small>Operational performance reports</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN ACTION AREA -->
+    <section class="action-area">
+      <div class="action-card">
+        <div>
+          <span class="action-kicker">AIPC CONTROL SYSTEM</span>
+          <h2>SMART ELECTRICAL MAINTENANCE</h2>
+          <p>
+            Centralized monitoring for motors, PLC, VFD, MCC,
+            power, fuel, preventive maintenance and equipment health.
+          </p>
+        </div>
+
+        <div class="action-buttons">
+          <button class="primary-btn" onclick="location.href='dashboard.html'">
+            OPEN LIVE DASHBOARD
+          </button>
+
+          <button class="secondary-btn" onclick="openInfo('AIPC System','ASIM BHARAT AIPC SYSTEM is designed for smart electrical maintenance, equipment monitoring and operational control.')">
+            SYSTEM INFO
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFO MODAL -->
+    <div id="infoModal" class="modal" onclick="closeModal(event)">
+      <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">×</button>
+
+        <div class="modal-icon">⚡</div>
+
+        <h2 id="modalTitle">AIPC SYSTEM</h2>
+
+        <p id="modalText">
+          Smart electrical maintenance and equipment monitoring system.
+        </p>
+
+        <button class="primary-btn modal-btn" onclick="closeModal()">
+          CLOSE
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div>
+      <b>⚡ ASIM BHARAT AIPC SYSTEM</b>
+      <small>SMART ELECTRICAL MAINTENANCE</small>
+    </div>
+
+    <div class="footer-status">
+      <span></span>
+      SYSTEM READY
+    </div>
+  </footer>
+
+  <script>
+    /* =========================================
+       AIPC HOMEPAGE FINAL FUNCTIONAL SCRIPT
+       ========================================= */
+
+    function openInfo(title, text) {
+      const modal = document.getElementById("infoModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalText = document.getElementById("modalText");
+
+      if (!modal || !modalTitle || !modalText) return;
+
+      modalTitle.textContent = title || "AIPC SYSTEM";
+      modalText.textContent = text || "Smart electrical maintenance and equipment monitoring system.";
+
+      modal.classList.add("show");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeModal(event) {
+      if (event && event.target !== event.currentTarget) return;
+
+      const modal = document.getElementById("infoModal");
+
+      if (modal) {
+        modal.classList.remove("show");
+      }
+
+      document.body.classList.remove("modal-open");
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    /* Close modal when clicking outside the modal box */
+    document.addEventListener("click", function(event) {
+      const modal = document.getElementById("infoModal");
+
+      if (
+        modal &&
+        modal.classList.contains("show") &&
+        event.target === modal
+      ) {
+        closeModal();
+      }
+    });
+
+    /* Topbar scroll effect */
+    window.addEventListener("scroll", function() {
+      const topbar = document.querySelector(".topbar");
+
+      if (!topbar) return;
+
+      if (window.scrollY > 20) {
+        topbar.classList.add("scrolled");
+      } else {
+        topbar.classList.remove("scrolled");
+      }
+    });
+  </script>
+
+</body>
+  </html>
