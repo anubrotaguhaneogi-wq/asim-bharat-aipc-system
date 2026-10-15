@@ -72,12 +72,69 @@ text-decoration:none;
 
 <input type="password" id="confirmPassword" placeholder="Confirm Password">
 
-<select id="role">
-<option value="Worker">Tea Garden Worker</option>
-<option value="Technician">Electrical Technician</option>
-<option value="Supervisor">Supervisor</option>
-<option value="Engineer">Engineer</option>
+<!-- চা বাগানের সুনির্দিষ্ট পদের ড্রপডাউন লিস্ট -->
+<select id="role" onchange="checkCustomPost(this)">
+<option value="" disabled selected>-- চা বাগানের পদ নির্বাচন করুন --</option>
+
+<!-- কোর ম্যানেজমেন্ট ও অ্যাডমিন -->
+<option value="core_admin">কোর অ্যাডমিন (ম্যানেজার / সাহেব)</option>
+<option value="assistant_manager_field">অ্যাসিস্ট্যান্ট ম্যানেজার (ফিল্ড)</option>
+<option value="assistant_manager_factory">অ্যাসিস্ট্যান্ট ম্যানেজার (ফ্যাক্টরি)</option>
+
+<!-- হেড অফিস ও প্রধান বাবু বিভাগ -->
+<option value="head_babu">বড়বাবু / হেড বাবু</option>
+<option value="office_head_clerk">অফিস বড়বাবু (হেড ক্লার্ক)</option>
+<option value="factory_head_clerk">ফ্যাক্টরি বড়বাবু</option>
+<option value="accountant">একাউন্ট্যান্ট / ক্যাশিয়ার বাবু</option>
+<option value="pf_babu">প্রভিডেন্ট ফান্ড (PF) বাবু</option>
+<option value="ration_babu">রেশন বাবু</option>
+<option value="despatch_clerk">ডিসপ্যাচ ক্লার্ক</option>
+
+<!-- ফিল্ড অ্যাসিস্ট্যান্টের অধীনে থাকা বিভাগসমূহ -->
+<option value="field_babu">ফিল্ড বড়বাবু / ক্ষেত বাবু</option>
+<option value="irrigation_babu">ইরিগেশন (সেচ) বাবু</option>
+<option value="pesticide_medicine_babu">ওষুধপত্র ও পেস্টিসাইড বাবু</option>
+<option value="nursery_incharge">নার্সারি বাবু / ইনচার্জ</option>
+<option value="plucking_supervisor">পাতা তোলার সুপারভাইজার</option>
+<option value="sardar">সরদার / কামিন সর্দার</option>
+
+<!-- ফ্যাক্টরি ও টেকনিক্যাল বিভাগ -->
+<option value="fitter_babu">ফিটার বাবু (মেকানিক্যাল)</option>
+<option value="electrician_babu">ইলেকট্রিশিয়ান বাবু</option>
+<option value="processing_babu">ফ্যাক্টরি প্রসেসিং বাবু</option>
+<option value="withering_operator">উইদারিং সেকশন অপারেটর</option>
+<option value="drying_operator">ড্রায়ার অপারেটর</option>
+<option value="sorting_packing_babu">সর্টিং ও প্যাকিং বাবু</option>
+<option value="generator_power_operator">জেনারেটর ও পাওয়ার অপারেটর</option>
+
+<!-- ভেহিকেল ও ট্রান্সপোর্ট -->
+<option value="vehicle_transport_babu">ভেহিকেল ও মোটর ট্রান্সপোর্ট বাবু</option>
+<option value="tractor_driver">ট্রাক্টর ও লরি ড্রাইভার</option>
+
+<!-- স্টোর ও গুদাম বিভাগ -->
+<option value="store_keeper">স্টোর কিপার (প্রধান গুদাম বাবু)</option>
+<option value="sub_store_babu">সাব-স্টোর বাবু</option>
+
+<!-- মেডিকেল ও হসপিটাল বিভাগ -->
+<option value="garden_doctor">বাগান ডাক্তার / মেডিকেল অফিসার</option>
+<option value="compounder_nurse">কম্পাউন্ডার / স্টাফ নার্স</option>
+<option value="ambulance_driver">অ্যাম্বুলেন্স ড্রাইভার</option>
+
+<!-- ওয়েলফেয়ার ও অন্যান্য সার্ভিস -->
+<option value="dhoba_babu">ধোবাবাবু (লন্ড্রি সার্ভিস)</option>
+<option value="napit_babu">নাপিত (সেলুন সার্ভিস)</option>
+<option value="school_teacher">বাগান প্রাইমারি স্কুল শিক্ষক</option>
+<option value="chowkidar_head">হেড চৌকিদার / সিকিউরিটি ইনচার্জ</option>
+<option value="labour">সাধারণ লেবার / কর্মী</option>
+
+<!-- ভবিষ্যতে নতুন পদ যোগ করার ফ্লেক্সিবল অপশন -->
+<option value="other_custom_post" style="font-weight: bold; color: #00E5FF;">+ অন্য কোনো নতুন পদ যুক্ত করুন...</option>
 </select>
+
+<!-- যদি নতুন পদ সিলেক্ট করা হয়, তবে এই ইনপুট বক্সটি দেখা যাবে -->
+<div id="customPostDiv" style="display: none;">
+<input type="text" id="customPostName" placeholder="এখানে নতুন পদের নাম লিখুন...">
+</div>
 
 <button onclick="register()">CREATE ACCOUNT</button>
 
@@ -90,6 +147,17 @@ Already have an account?
 
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
+<script>
+  // ড্রপডাউন থেকে 'অন্যান্য' সিলেক্ট করলে নতুন পদের ইনপুট বক্স ওপেন করার লজিক
+  function checkCustomPost(selectObj) {
+    const customDiv = document.getElementById('customPostDiv');
+    if (selectObj.value === 'other_custom_post') {
+      customDiv.style.display = 'block';
+    } else {
+      customDiv.style.display = 'none';
+    }
+  }
+</script>
 
 </body>
 </html>
