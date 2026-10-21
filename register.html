@@ -9,48 +9,46 @@
 
 <style>
 .register-box{
-max-width:450px;
-margin:40px auto;
-padding:30px;
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(18px);
-border-radius:22px;
-border:1px solid rgba(255,255,255,.15);
+  max-width:450px;
+  margin:40px auto;
+  padding:30px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(18px);
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.15);
 }
 .register-box h2{
-text-align:center;
-margin-bottom:20px;
-font-family:Orbitron,sans-serif;
-color:#00E5FF;
+  text-align:center;
+  margin-bottom:20px;
+  font-family:Orbitron,sans-serif;
+  color:#00E5FF;
 }
 .register-box input,.register-box select{
-width:100%;
-padding:14px;
-margin:10px 0;
-border:none;
-border-radius:12px;
-background:#1a2b34;
-color:white;
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border:none;
+  border-radius:12px;
+  background:#1a2b34;
+  color:white;
 }
+.register-box option{ background:#1a2b34; color:white; }
 .register-box button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:linear-gradient(90deg,#00E5FF,#00FF9D);
-font-weight:bold;
-cursor:pointer;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,#00E5FF,#00FF9D);
+  font-weight:bold;
+  cursor:pointer;
 }
 .note{
-text-align:center;
-margin-top:15px;
-font-size:14px;
-color:#BFD5D8;
+  text-align:center;
+  margin-top:15px;
+  font-size:14px;
+  color:#BFD5D8;
 }
-.note a{
-color:#00E5FF;
-text-decoration:none;
-}
+.note a{ color:#00E5FF; text-decoration:none; }
 </style>
 </head>
 
@@ -63,80 +61,69 @@ text-decoration:none;
 <h2>CREATE ACCOUNT</h2>
 
 <input type="text" id="name" placeholder="Full Name">
-
 <input type="text" id="mobile" placeholder="Mobile Number">
-
 <input type="email" id="email" placeholder="Email Address">
-
 <input type="password" id="password" placeholder="Password">
-
 <input type="password" id="confirmPassword" placeholder="Confirm Password">
 
-<!-- চা বাগানের সুনির্দিষ্ট পদের ড্রপডাউন লিস্ট -->
 <select id="role" onchange="checkCustomPost(this)">
-<option value="" disabled selected>-- চা বাগানের পদ নির্বাচন করুন --</option>
+<option value="" disabled selected>-- Select your post --</option>
 
-<!-- কোর ম্যানেজমেন্ট ও অ্যাডমিন -->
-<option value="core_admin">কোর অ্যাডমিন (ম্যানেজার / সাহেব)</option>
-<option value="assistant_manager_field">অ্যাসিস্ট্যান্ট ম্যানেজার (ফিল্ড)</option>
-<option value="assistant_manager_factory">অ্যাসিস্ট্যান্ট ম্যানেজার (ফ্যাক্টরি)</option>
+<option value="core_admin">Core Admin (Manager / Sahib)</option>
+<option value="assistant_manager_field">Assistant Manager (Field)</option>
+<option value="assistant_manager_factory">Assistant Manager (Factory)</option>
 
-<!-- হেড অফিস ও প্রধান বাবু বিভাগ -->
-<option value="head_babu">বড়বাবু / হেড বাবু</option>
-<option value="office_head_clerk">অফিস বড়বাবু (হেড ক্লার্ক)</option>
-<option value="factory_head_clerk">ফ্যাক্টরি বড়বাবু</option>
-<option value="accountant">একাউন্ট্যান্ট / ক্যাশিয়ার বাবু</option>
-<option value="pf_babu">প্রভিডেন্ট ফান্ড (PF) বাবু</option>
-<option value="ration_babu">রেশন বাবু</option>
-<option value="despatch_clerk">ডিসপ্যাচ ক্লার্ক</option>
+<option value="head_babu">Head Babu / Bara Babu</option>
+<option value="office_head_clerk">Office Head Clerk</option>
+<option value="factory_head_clerk">Factory Head Clerk</option>
+<option value="accountant">Accountant / Cashier</option>
+<option value="pf_babu">Provident Fund (PF) Babu</option>
+<option value="ration_babu">Ration Babu</option>
+<option value="despatch_clerk">Despatch Clerk</option>
 
-<!-- ফিল্ড অ্যাসিস্ট্যান্টের অধীনে থাকা বিভাগসমূহ -->
-<option value="field_babu">ফিল্ড বড়বাবু / ক্ষেত বাবু</option>
-<option value="irrigation_babu">ইরিগেশন (সেচ) বাবু</option>
-<option value="pesticide_medicine_babu">ওষুধপত্র ও পেস্টিসাইড বাবু</option>
-<option value="nursery_incharge">নার্সারি বাবু / ইনচার্জ</option>
-<option value="plucking_supervisor">পাতা তোলার সুপারভাইজার</option>
-<option value="sardar">সরদার / কামিন সর্দার</option>
+<option value="field_babu">Field Babu</option>
+<option value="irrigation_babu">Irrigation Babu</option>
+<option value="pesticide_medicine_babu">Pesticide and Medicine Babu</option>
+<option value="nursery_incharge">Nursery Incharge</option>
+<option value="plucking_supervisor">Plucking Supervisor</option>
+<option value="sardar">Sardar</option>
 
-<!-- ফ্যাক্টরি ও টেকনিক্যাল বিভাগ -->
-<option value="fitter_babu">ফিটার বাবু (মেকানিক্যাল)</option>
-<option value="electrician_babu">ইলেকট্রিশিয়ান বাবু</option>
-<option value="processing_babu">ফ্যাক্টরি প্রসেসিং বাবু</option>
-<option value="withering_operator">উইদারিং সেকশন অপারেটর</option>
-<option value="drying_operator">ড্রায়ার অপারেটর</option>
-<option value="sorting_packing_babu">সর্টিং ও প্যাকিং বাবু</option>
-<option value="generator_power_operator">জেনারেটর ও পাওয়ার অপারেটর</option>
+<option value="fitter_babu">Fitter Babu (Mechanical)</option>
+<option value="electrician_babu">Electrician Babu</option>
+<option value="processing_babu">Factory Processing Babu</option>
+<option value="withering_operator">Withering Section Operator</option>
+<option value="drying_operator">Dryer Operator</option>
+<option value="sorting_packing_babu">Sorting and Packing Babu</option>
+<option value="generator_power_operator">Generator and Power Operator</option>
 
-<!-- ভেহিকেল ও ট্রান্সপোর্ট -->
-<option value="vehicle_transport_babu">ভেহিকেল ও মোটর ট্রান্সপোর্ট বাবু</option>
-<option value="tractor_driver">ট্রাক্টর ও লরি ড্রাইভার</option>
+<option value="vehicle_transport_babu">Vehicle and Transport Babu</option>
+<option value="tractor_driver">Tractor and Lorry Driver</option>
 
-<!-- স্টোর ও গুদাম বিভাগ -->
-<option value="store_keeper">স্টোর কিপার (প্রধান গুদাম বাবু)</option>
-<option value="sub_store_babu">সাব-স্টোর বাবু</option>
+<option value="store_keeper">Store Keeper</option>
+<option value="sub_store_babu">Sub-Store Babu</option>
 
-<!-- মেডিকেল ও হসপিটাল বিভাগ -->
-<option value="garden_doctor">বাগান ডাক্তার / মেডিকেল অফিসার</option>
-<option value="compounder_nurse">কম্পাউন্ডার / স্টাফ নার্স</option>
-<option value="ambulance_driver">অ্যাম্বুলেন্স ড্রাইভার</option>
+<option value="garden_doctor">Garden Doctor / Medical Officer</option>
+<option value="compounder_nurse">Compounder / Staff Nurse</option>
+<option value="ambulance_driver">Ambulance Driver</option>
 
-<!-- ওয়েলফেয়ার ও অন্যান্য সার্ভিস -->
-<option value="dhoba_babu">ধোবাবাবু (লন্ড্রি সার্ভিস)</option>
-<option value="napit_babu">নাপিত (সেলুন সার্ভিস)</option>
-<option value="school_teacher">বাগান প্রাইমারি স্কুল শিক্ষক</option>
-<option value="chowkidar_head">হেড চৌকিদার / সিকিউরিটি ইনচার্জ</option>
-<option value="labour">সাধারণ লেবার / কর্মী</option>
+<option value="dhoba_babu">Dhoba (Laundry Service)</option>
+<option value="napit_babu">Napit (Salon Service)</option>
+<option value="school_teacher">Garden Primary School Teacher</option>
+<option value="chowkidar_head">Head Chowkidar / Security Incharge</option>
+<option value="labour">General Labour / Worker</option>
 
-<!-- ভবিষ্যতে নতুন পদ যোগ করার ফ্লেক্সিবল অপশন -->
-<option value="other_custom_post" style="font-weight: bold; color: #00E5FF;">+ অন্য কোনো নতুন পদ যুক্ত করুন...</option>
+<option value="other_custom_post">+ Add another post...</option>
 </select>
 
-<!-- যদি নতুন পদ সিলেক্ট করা হয়, তবে এই ইনপুট বক্সটি দেখা যাবে -->
-<div id="customPostDiv" style="display: none;">
-<input type="text" id="customPostName" placeholder="এখানে নতুন পদের নাম লিখুন...">
+<!-- Shown only when "Add another post" is selected -->
+<div id="customPostDiv" style="display:none;">
+<input type="text" id="customPostName" placeholder="Type your post name here...">
 </div>
 
 <button onclick="register()">CREATE ACCOUNT</button>
+
+<!-- Message area -->
+<div id="status" class="note"></div>
 
 <div class="note">
 Already have an account?
@@ -145,17 +132,20 @@ Already have an account?
 
 </div>
 
+<!-- 1. Firebase SDK first -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
+
+<!-- 2. Config, 3. auth.js (do not change this order) -->
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
+
 <script>
-  // ড্রপডাউন থেকে 'অন্যান্য' সিলেক্ট করলে নতুন পদের ইনপুট বক্স ওপেন করার লজিক
   function checkCustomPost(selectObj) {
-    const customDiv = document.getElementById('customPostDiv');
-    if (selectObj.value === 'other_custom_post') {
-      customDiv.style.display = 'block';
-    } else {
-      customDiv.style.display = 'none';
-    }
+    var customDiv = document.getElementById('customPostDiv');
+    customDiv.style.display = (selectObj.value === 'other_custom_post') ? 'block' : 'none';
   }
 </script>
 
