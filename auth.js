@@ -1,166 +1,155 @@
-// =========================================
-// ASIM BHARAT AIPC SYSTEM - FIREBASE AUTH & DB
-// Dynamic Premium Authentication System v2.0
-// =========================================
-
-// ফায়ারবেস অলরেডি ইনিশিয়ালাইজ করা আছে ধরে নিয়ে Auth ও Firestore ডিক্লেয়ার করা হলো:
+// ===== ASIM BHARAT - Login / Register =====
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-const CONFIG = {
-  SESSION_TIMEOUT: 30 * 60 * 1000, // 30 minutes
-  MIN_PASSWORD_LENGTH: 6
-};
+const MIN_PASSWORD = 6;
+const ADMIN_ROLES = ["core_admin", "super_admin", "admin"];
 
-// ---------- Utility Functions ----------
-function showMessage(elementId, message, type = "error") {
-  const el = document.getElementById(elementId);
-  if (!el) {
-    alert(message);
-    return;
-  }
-  el.innerHTML = message;
+// Show message in element id="status", else alert
+function showMessage(message, type) {
+  const el = document.getElementById("status");
+  if (!el) return alert(message);
+  el.textContent = message;
   el.style.color = type === "success" ? "#00FF9D" : "#ff4d4d";
 }
 
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+// Read input value without extra spaces
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : "";
 }
 
-function isStrongPassword(password) {
-  return password.length >= CONFIG.MIN_PASSWORD_LENGTH;
-}
+// ===== Register =====
+async function register() {
+  const name = val("name");
+  const mobile = val("mobile");
+  const email = val("email");
+  const password = document.getElementById("password").value;
+  const confirm = document.getElementById("confirmPassword").value;
+  let requestedRole = document.getElementById("role").value;
 
-// ---------- Register (Firebase Auth + Firestore) ----------
-function register() {
-  const name = document.getElementById("name")?.value.trim();
-  const mobile = document.getElementById("mobile")?.value.trim();
-  const email = document.getElementById("email")?.value.trim();
-  const password = document.getElementById("password")?.value;
-  const confirm = document.getElementById("confirmPassword")?.value;
-  const role = document.getElementById("role")?.value || "user";
-
-  if (!name || !mobile || !email || !password || !confirm) {
-    return showMessage("status", "সব তথ্য পূরণ করুন", "error");
+  // If custom post selected, use the typed name
+  if (requestedRole === "other_custom_post") {
+    requestedRole = val("customPostName");
   }
 
-  if (!isValidEmail(email)) {
-    return showMessage("status", "সঠিক ইমেইল অ্যাড্রেস দিন", "error");
+  if (!name || !mobile || !email || !password || !confirm || !requestedRole) {
+    return showMessage("Please fill all fields and select a post.");
   }
-
-  if (!isStrongPassword(password)) {
-    return showMessage("status", `পাসওয়ার্ড কমপক্ষে ${CONFIG.MIN_PASSWORD_LENGTH} অক্ষরের হতে হবে`, "error");
+  if (!/^[6-9]\d{9}$/.test(mobile)) {
+    return showMessage("Mobile number must be 10 digits.");
   }
-
+  if (password.length < MIN_PASSWORD) {
+    return showMessage("Password must be at least " + MIN_PASSWORD + " characters.");
+  }
   if (password !== confirm) {
-    return showMessage("status", "পাসওয়ার্ড মিলছে না", "error");
+    return showMessage("Passwords do not match.");
   }
 
-  // Firebase Auth দিয়ে ইউজার তৈরি
-  auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      
-      // Firestore-এ এক্সট্রা ডেটা (নাম, মোবাইল, রোল ইত্যাদি) সেভ করা
-      return db.collection("users").doc(user.uid).set({
-        uid: user.uid,
-        name: name,
-        mobile: mobile,
-        email: email,
-        role: role, // 'super_admin', 'manager', 'user' ইত্যাদি
-        status: "Active",
-        created: new Date().toISOString(),
-        lastLogin: new Date().toISOString()
-      });
-    })
-    .then(() => {
-      showMessage("status", "রেজিস্ট্রেশন সফল হয়েছে! লগইন পেজে যাচ্ছেন...", "success");
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 1200);
-    })
-    .catch((error) => {
-      console.error("Registration Error:", error);
-      showMessage("status", "রেজিস্ট্রেশন ব্যর্থ: " + error.message, "error");
+  // Prevent double click
+  const btn = document.querySelector(".register-box button");
+  if (btn) btn.disabled = true;
+
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    const user = cred.user;
+
+    // Role is always "user". Requested post is saved separately.
+    // Admin approves later and changes role/status.
+    await db.collection("users").doc(user.uid).set({
+      uid: user.uid,
+      name: name,
+      mobile: mobile,
+      email: email,
+      role: "user",
+      requestedRole: requestedRole,
+      status: "Pending",
+      created: new Date().toISOString()
     });
+
+    await auth.signOut();
+    showMessage("Registration successful! You can login after admin approval.", "success");
+    setTimeout(function () { window.location.href = "login.html"; }, 2000);
+  } catch (error) {
+    console.error("Register Error:", error);
+    if (error.code === "auth/email-already-in-use") {
+      showMessage("An account with this email already exists.");
+    } else {
+      showMessage("Registration failed: " + error.message);
+    }
+    if (btn) btn.disabled = false;
+  }
 }
 
-// ---------- Login (Firebase Auth) ----------
-function login() {
-  const email = document.getElementById("email")?.value.trim(); // ইমেইল বা ইউজার আইডি দিয়ে লগইন
-  const password = document.getElementById("password")?.value;
+// ===== Login =====
+async function login() {
+  const email = val("email");
+  const password = document.getElementById("password").value;
 
   if (!email || !password) {
-    return showMessage("status", "ইমেইল ও পাসওয়ার্ড দিন", "error");
+    return showMessage("Enter email and password.");
   }
 
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      
-      // Firestore থেকে ইউজারের রোল চেক করা
-      return db.collection("users").doc(user.uid).get();
-    })
-    .then((doc) => {
-      if (doc.exists) {
-        const userData = doc.data();
-        
-        if (userData.status !== "Active") {
-          auth.signOut();
-          return showMessage("status", "আপনার অ্যাকাউন্ট অ্যাকটিভ নয়। এডমিনের সাথে যোগাযোগ করুন।", "error");
-        }
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    const doc = await db.collection("users").doc(cred.user.uid).get();
 
-        showMessage("status", "লগইন সফল! রিডাইরেক্ট হচ্ছে...", "success");
+    if (!doc.exists) {
+      await auth.signOut();
+      return showMessage("User not found in database.");
+    }
 
-        // Role অনুসারে রিডাইরেক্ট
-        setTimeout(() => {
-          if (userData.role === "admin" || userData.role === "super_admin") {
-            window.location.href = "admin-dashboard.html";
-          } else if (userData.role === "manager") {
-            window.location.href = "teacher-dashboard.html"; // বা ম্যানেজার ড্যাশবোর্ড
-          } else {
-            window.location.href = "dashboard.html";
-          }
-        }, 800);
+    const data = doc.data();
+    if (data.status !== "Active") {
+      await auth.signOut();
+      return showMessage("Your account is not approved yet. Contact admin.");
+    }
+
+    showMessage("Login successful! Redirecting...", "success");
+    setTimeout(function () {
+      if (ADMIN_ROLES.includes(data.role)) {
+        window.location.href = "admin-dashboard.html";
       } else {
-        showMessage("status", "ইউজার ডাটাবেজে পাওয়া যায়নি", "error");
+        window.location.href = "dashboard.html";
       }
-    })
-    .catch((error) => {
-      console.error("Login Error:", error);
-      showMessage("status", "ভুল ইমেইল বা পাসওয়ার্ড", "error");
-    });
+    }, 800);
+  } catch (error) {
+    console.error("Login Error:", error);
+    showMessage("Wrong email or password.");
+  }
 }
 
-// ---------- Logout ----------
+// ===== Logout =====
 function logout() {
-  auth.signOut().then(() => {
+  auth.signOut().then(function () {
     window.location.href = "login.html";
-  }).catch((error) => {
-    console.error("Logout Error:", error);
   });
 }
 
-// ---------- Protect Page & Check Current User ----------
-function requireLogin(allowedRoles = []) {
-  auth.onAuthStateChanged(async (user) => {
+// ===== Page protection (use in dashboard pages) =====
+// Example: requireLogin(["super_admin", "admin"]);
+function requireLogin(allowedRoles) {
+  allowedRoles = allowedRoles || [];
+  auth.onAuthStateChanged(async function (user) {
     if (!user) {
       window.location.href = "login.html";
       return;
     }
-
-    // রোল চেক
     try {
       const doc = await db.collection("users").doc(user.uid).get();
-      if (doc.exists) {
-        const userData = doc.data();
-        if (allowedRoles.length > 0 && !allowedRoles.includes(userData.role)) {
-          alert("আপনার এই পেজে অ্যাক্সেস নেই");
-          window.location.href = "dashboard.html";
-        }
+      const data = doc.exists ? doc.data() : null;
+
+      if (!data || data.status !== "Active") {
+        await auth.signOut();
+        window.location.href = "login.html";
+        return;
+      }
+      if (allowedRoles.length && !allowedRoles.includes(data.role)) {
+        alert("You do not have access to this page.");
+        window.location.href = "dashboard.html";
       }
     } catch (error) {
       console.error("Role check error:", error);
     }
   });
-}
+  }
