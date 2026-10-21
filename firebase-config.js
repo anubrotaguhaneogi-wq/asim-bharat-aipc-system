@@ -1,4 +1,5 @@
-// Firebase Config
+// ===== Firebase configuration =====
+// Only config here. Do NOT declare auth or db in this file.
 const firebaseConfig = {
   apiKey: "AIzaSyDqXcxTrI22Ju1Rj9mtbUSCjGkT7B_OxZo",
   authDomain: "kali-life-ecosystem.firebaseapp.com",
@@ -9,6 +10,14 @@ const firebaseConfig = {
   measurementId: "G-LBEY0W7RX3"
 };
 
-// Initialize Firebase (Compat version)
-firebase.initializeApp(firebaseConfig);
-const analytics = firebase.analytics();
+// Initialize only once
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+// Analytics failure must not break the app
+try {
+  firebase.analytics();
+} catch (e) {
+  console.warn("Analytics not started:", e.message);
+}
