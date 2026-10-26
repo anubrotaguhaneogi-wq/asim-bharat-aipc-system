@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Breakdown Report | ASIM BHARAT AIPC SYSTEM</title>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#0b1220;color:#fff;}
@@ -13,37 +12,13 @@ header h1{color:#22c55e;}
 .container{max-width:700px;margin:auto;padding:15px;}
 .card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:15px;}
 label{display:block;margin-top:12px;margin-bottom:5px;font-size:14px;}
-input,select,textarea{
-width:100%;
-padding:10px;
-border:none;
-border-radius:8px;
-background:#0f172a;
-color:#fff;
-}
+input,select,textarea{width:100%;padding:10px;border:none;border-radius:8px;background:#0f172a;color:#fff;}
 textarea{height:90px;resize:vertical;}
-button{
-width:100%;
-padding:12px;
-margin-top:20px;
-background:#dc2626;
-color:#fff;
-border:none;
-border-radius:10px;
-font-size:15px;
-cursor:pointer;
-}
-button:hover{background:#b91c1c;}
-.back{
-display:block;
-text-align:center;
-margin-top:18px;
-color:#60a5fa;
-text-decoration:none;
-}
+button{width:100%;padding:12px;margin-top:20px;background:#dc2626;color:#fff;border:none;border-radius:10px;font-size:15px;cursor:pointer;}
+button:disabled{opacity:.6;}
+.back{display:block;text-align:center;margin-top:18px;color:#60a5fa;text-decoration:none;}
 </style>
 </head>
-
 <body>
 
 <header>
@@ -52,14 +27,13 @@ text-decoration:none;
 </header>
 
 <div class="container">
-
 <div class="card">
 
 <label>Equipment ID</label>
-<input type="text" placeholder="Example: MTR-001">
+<input type="text" id="equipmentId" placeholder="Example: MTR-001">
 
 <label>Equipment Type</label>
-<select>
+<select id="equipmentType">
 <option>Motor</option>
 <option>PLC</option>
 <option>VFD</option>
@@ -70,13 +44,13 @@ text-decoration:none;
 </select>
 
 <label>Breakdown Date</label>
-<input type="date">
+<input type="date" id="breakdownDate">
 
 <label>Breakdown Time</label>
-<input type="time">
+<input type="time" id="breakdownTime">
 
 <label>Priority</label>
-<select>
+<select id="priority">
 <option>Low</option>
 <option>Medium</option>
 <option>High</option>
@@ -84,28 +58,67 @@ text-decoration:none;
 </select>
 
 <label>Fault Description</label>
-<textarea placeholder="Write fault details..."></textarea>
+<textarea id="faultDescription" placeholder="Write fault details..."></textarea>
 
 <label>Action Taken</label>
-<textarea placeholder="Write action taken..."></textarea>
+<textarea id="actionTaken" placeholder="Write action taken..."></textarea>
 
 <label>Technician Name</label>
-<input type="text" placeholder="Enter technician name">
+<input type="text" id="technicianName" placeholder="Enter technician name">
 
-<label>Upload Photo</label>
-<input type="file" accept="image/*">
-
-<button onclick="saveReport()">Submit Breakdown Report</button>
+<button id="saveBtn" onclick="saveReport()">Submit Breakdown Report</button>
 
 </div>
-
 <a href="super-admin-dashboard.html" class="back">← Back to Dashboard</a>
-
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 
 <script>
-function saveReport(){
-alert("Breakdown Report Submitted Successfully");
+requireLogin();
+
+async function saveReport(){
+  const btn = document.getElementById("saveBtn");
+  const equipmentId = document.getElementById("equipmentId").value.trim();
+  const faultDescription = document.getElementById("faultDescription").value.trim();
+
+  if(!equipmentId || !faultDescription){
+    alert("Equipment ID and Fault Description are required.");
+    return;
+  }
+
+  const user = auth.currentUser;
+  if(!user){
+    alert("Please login first.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  btn.disabled = true;
+  try{
+    await db.collection("breakdownReports").add({
+      equipmentId: equipmentId,
+      equipmentType: document.getElementById("equipmentType").value,
+      breakdownDate: document.getElementById("breakdownDate").value,
+      breakdownTime: document.getElementById("breakdownTime").value,
+      priority: document.getElementById("priority").value,
+      faultDescription: faultDescription,
+      actionTaken: document.getElementById("actionTaken").value.trim(),
+      technicianName: document.getElementById("technicianName").value.trim(),
+      createdBy: user.uid,
+      created: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    alert("Breakdown Report saved successfully.");
+    location.reload();
+  }catch(error){
+    console.error("Save Error:", error);
+    alert("Save failed: " + error.message);
+    btn.disabled = false;
+  }
 }
 </script>
 
