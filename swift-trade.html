@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swift Trade</title>
+<style>
+  :root{
+    --paper:#eef1f6; --card:#ffffff; --ink:#14213d; --muted:#5b6785; --line:#d6dce8;
+    --brand:#1f3a8a; --go:#0f766e; --go-bg:#d9f3ee; --warn:#b45309; --warn-bg:#fdeccf;
+    --bad:#b42318; --bad-bg:#fde4e1;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0f1626; --card:#18213a; --ink:#e8ecf7; --muted:#9aa6c4; --line:#2a3556;
+      --brand:#7ea1ff; --go:#4fd1be; --go-bg:#12372f; --warn:#f6ad55; --warn-bg:#3d2a0f;
+      --bad:#ff8a80; --bad-bg:#40191a;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Noto Sans Bengali","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;line-height:1.5}
+  button,input,select{font:inherit}
+  .wrap{max-width:760px;margin:0 auto;padding:14px}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .logo{font-weight:800;font-size:1.45rem;letter-spacing:-.02em;color:var(--brand)}
+  .logo small{display:block;font-weight:500;font-size:.72rem;color:var(--muted);letter-spacing:0}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.8rem}
+  .btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;background:var(--brand);color:#fff}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn.big{width:100%;padding:15px;font-size:1.08rem}
+  .btn:focus-visible,.tab:focus-visible,.pill:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+  .btn:disabled{opacity:.6}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+  .panel h2{font-size:1rem;margin:0 0 10px}
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+  .tab{flex:1;min-width:92px;padding:10px 8px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;font-size:.88rem}
+  .pill[aria-pressed="true"]{background:var(--go-bg);border-color:var(--go);color:var(--go);font-weight:700}
+  .crit{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+  .crit:first-of-type{border-top:0}
+  .crit label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;flex:1}
+  .crit input[type=checkbox]{width:20px;height:20px;margin-top:2px;accent-color:var(--brand)}
+  .crit small{display:block;color:var(--muted)}
+  .num{width:74px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-align:center}
+  .demo{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:9px 12px;font-size:.84rem;margin-bottom:12px;font-weight:600}
+  .res{border:1px solid var(--line);border-left-width:6px;border-radius:12px;padding:12px;margin-bottom:10px;background:var(--card)}
+  .res.full{border-left-color:var(--go)}
+  .res.part{border-left-color:var(--warn)}
+  .res.none{border-left-color:var(--line);opacity:.8}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .sym{font-weight:800;font-size:1.05rem}
+  .px{font-variant-numeric:tabular-nums;font-weight:700}
+  .meta{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-size:.82rem;margin:6px 0}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:.76rem;padding:3px 9px;border-radius:6px;font-weight:600}
+  .tag.ok{background:var(--go-bg);color:var(--go)}
+  .tag.no{background:var(--bad-bg);color:var(--bad)}
+  .summary{display:flex;gap:8px;margin-bottom:10px}
+  .summary div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+  .summary b{display:block;font-size:1.4rem}
+  .login{max-width:380px;margin:12vh auto 0}
+  .login input{width:100%;padding:12px;margin-bottom:10px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+  .err{color:var(--bad);font-size:.88rem;min-height:1.2em;margin-bottom:8px}
+  .hidden{display:none!important}
+  .empty{text-align:center;color:var(--muted);padding:26px 10px}
+  footer{color:var(--muted);font-size:.76rem;text-align:center;padding:10px 0 24px}
+  @media (prefers-reduced-motion: no-preference){ .btn{transition:transform .08s} .btn:active{transform:scale(.98)} }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<section id="loginView" class="wrap login hidden">
+  <div class="panel">
+    <div class="logo" style="margin-bottom:14px">Swift Trade<small>দ্রুত মার্কেট স্ক্যানার</small></div>
+    <input id="email" type="email" placeholder="Email" autocomplete="username">
+    <input id="pass" type="password" placeholder="Password" autocomplete="current-password">
+    <div id="loginErr" class="err"></div>
+    <button class="btn big" id="loginBtn">Login</button>
+  </div>
+</section>
+
+<!-- ============ VIP EXPIRED ============ -->
+<section id="expiredView" class="wrap login hidden">
+  <div class="panel">
+    <h2>আপনার VIP মেয়াদ শেষ</h2>
+    <p style="color:var(--muted)">অ্যাক্সেস আবার চালু করতে রিচার্জ করুন। রিচার্জের পর মেয়াদ আপডেট হলে আবার লগইন করুন।</p>
+    <button class="btn big" id="expLogout">Logout</button>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<main id="appView" class="wrap hidden">
+  <header class="top">
+    <div class="logo">Swift Trade<small>এক ক্লিকে বিশ্লেষণ</small></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="chip" id="vipChip">VIP</span>
+      <button class="btn ghost" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <div id="demoBar" class="demo hidden">ডেমো ডেটা: এই ফলাফল আসল বাজারদর নয়। আসল ডেটা সংযোগের আগে এর ভিত্তিতে ট্রেড করবেন না।</div>
+
+  <div class="panel">
+    <h2>১. বাজার বেছে নিন</h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+  </div>
+
+  <div class="panel" id="sectorPanel">
+    <h2>২. সেক্টর বেছে নিন</h2>
+    <div class="pills" id="sectors"></div>
+  </div>
+
+  <div class="panel">
+    <h2>৩. আপনার শর্ত</h2>
+    <div class="crit">
+      <label><input type="checkbox" id="c_rsi" checked><span>RSI এর উপরে<small>RSI(14) নির্দিষ্ট মানের বেশি</small></span></label>
+      <input class="num" id="v_rsi" type="number" value="50" min="1" max="99">
+    </div>
+    <div class="crit">
+      <label><input type="checkbox" id="c_break" checked><span>Resistance ভেঙেছে<small>শেষ ১০ দিনে আগের উঁচু স্তরের উপরে ক্লোজ</small></span></label>
+    </div>
+    <div class="crit">
+      <label><input type="checkbox" id="c_pull" checked><span>Pullback হয়েছে<small>ভাঙার পর স্তরের কাছে নেমে এসেছিল (দূরত্ব %)</small></span></label>
+      <input class="num" id="v_pull" type="number" value="1.5" step="0.1" min="0.1" max="10">
+    </div>
+    <div class="crit">
+      <label><input type="checkbox" id="c_rise" checked><span>আবার উঠছে<small>শেষ ক্লোজ আগের দিন ও ৩ দিন আগের চেয়ে বেশি</small></span></label>
+    </div>
+  </div>
+
+  <button class="btn big" id="analyzeBtn">Analyze</button>
+
+  <div id="out" style="margin-top:14px"></div>
+  <footer>Swift Trade · শুধু বিশ্লেষণের সহায়ক টুল, বিনিয়োগ পরামর্শ নয়</footer>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* =====================================================
+   1) FIREBASE CONFIG — নিজের নতুন Firebase প্রজেক্টের কনফিগ এখানে বসান।
+   না বসালে অ্যাপ ডেমো মোডে চলবে (লগইন ছাড়া)।
+   ===================================================== */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+  appId: "YOUR_APP_ID"
+};
+const DEMO_MODE = firebaseConfig.apiKey === "YOUR_API_KEY";
+
+/* =====================================================
+   2) বাজার ও সেক্টর তালিকা
+   ===================================================== */
+const MARKETS = {
+  stocks: { label:"Stocks", sectors:{
+    "Bank":["HDFCBANK","ICICIBANK","SBIN","AXISBANK","KOTAKBANK"],
+    "IT":["TCS","INFY","WIPRO","HCLTECH","TECHM"],
+    "Auto":["MARUTI","TATAMOTORS","M&M","BAJAJ-AUTO","EICHERMOT"],
+    "Pharma":["SUNPHARMA","CIPLA","DRREDDY","DIVISLAB"],
+    "Energy":["RELIANCE","ONGC","NTPC","POWERGRID","COALINDIA"],
+    "FMCG":["HINDUNILVR","ITC","NESTLEIND","BRITANNIA"]
+  }},
+  forex:     { label:"Forex",     sectors:{ "Pairs":["USDINR","EURUSD","GBPUSD","USDJPY","EURINR"] }},
+  commodity: { label:"Commodity", sectors:{ "Metals & Energy":["GOLD","SILVER","CRUDEOIL","NATURALGAS","COPPER"] }},
+  options:   { label:"Options",   sectors:{ "Index underlying":["NIFTY","BANKNIFTY","FINNIFTY"] }}
+};
+
+/* =====================================================
+   3) ডেটা সরবরাহকারী — পরের ধাপে এখানে আসল API বসবে।
+   এখন ডেমো: প্রতিদিনের জন্য নির্দিষ্ট (seeded) কৃত্রিম ক্যান্ডেল।
+   ===================================================== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function hashStr(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+
+async function getCandles(symbol, market){
+  // TODO (পরে): আসল ডেটা — const r = await fetch(`/your-api/${symbol}`); return await r.json();
+  // প্রত্যাশিত ফরম্যাট: [{o,h,l,c}, ...] পুরনো থেকে নতুন, কমপক্ষে ৬০টি
+  const day = new Date().toISOString().slice(0,10);
+  const rnd = mulberry32(hashStr(symbol+day));
+  let price = 100 + rnd()*900, drift = 0, out = [];
+  for(let i=0;i<120;i++){
+    if(i%25===0) drift = (rnd()-0.45)*0.006;
+    const o = price;
+    const c = o*(1+drift+(rnd()-0.5)*0.022);
+    const h = Math.max(o,c)*(1+rnd()*0.008);
+    const l = Math.min(o,c)*(1-rnd()*0.008);
+    out.push({o,h,l,c}); price = c;
+  }
+  return out;
+}
+
+/* =====================================================
+   4) বিশ্লেষণ ইঞ্জিন
+   ===================================================== */
+function rsi14(closes){
+  const p=14; if(closes.length<=p) return null;
+  let g=0,l=0;
+  for(let i=1;i<=p;i++){const d=closes[i]-closes[i-1]; d>=0?g+=d:l-=d}
+  g/=p; l/=p;
+  for(let i=p+1;i<closes.length;i++){
+    const d=closes[i]-closes[i-1];
+    g=(g*(p-1)+(d>0?d:0))/p; l=(l*(p-1)+(d<0?-d:0))/p;
+  }
+  return l===0?100:100-100/(1+g/l);
+}
+
+function analyze(candles, cfg){
+  const n=candles.length, C=candles.map(x=>x.c), H=candles.map(x=>x.h), L=candles.map(x=>x.l);
+  const rsi = rsi14(C);
+  // স্তর নির্ধারণ: শেষ ১০ দিনের আগের ৩৫ দিনের সর্বোচ্চ/সর্বনিম্ন
+  const from=n-45, to=n-10;
+  const resistance=Math.max(...H.slice(from,to));
+  const support=Math.min(...L.slice(from,to));
+  let breakIdx=-1;
+  for(let i=n-10;i<n;i++){ if(C[i]>resistance){breakIdx=i;break} }
+  const broke = breakIdx>=0;
+  let pulled=false;
+  if(broke){
+    const tol=resistance*(1+cfg.pullPct/100);
+    for(let i=breakIdx+1;i<n;i++){ if(L[i]<=tol){pulled=true;break} }
+  }
+  const rising = C[n-1]>C[n-2] && C[n-1]>C[n-4];
+  const checks = {
+    rsi:   {on:cfg.useRsi,   pass: rsi!==null && rsi>cfg.rsiMin, label:`RSI ${rsi?rsi.toFixed(0):'-'}`},
+    break: {on:cfg.useBreak, pass: broke,  label:'Resistance ভেঙেছে'},
+    pull:  {on:cfg.usePull,  pass: pulled, label:'Pullback'},
+    rise:  {on:cfg.useRise,  pass: rising, label:'আবার উঠছে'}
+  };
+  const active=Object.values(checks).filter(c=>c.on);
+  const passed=active.filter(c=>c.pass).length;
+  return {price:C[n-1], chg:(C[n-1]/C[n-2]-1)*100, rsi, resistance, support, checks,
+          passed, total:active.length, full: active.length>0 && passed===active.length};
+}
+
+/* =====================================================
+   5) UI
+   ===================================================== */
+const $=id=>document.getElementById(id);
+let market="stocks", selectedSectors=new Set();
+
+function renderTabs(){
+  $("tabs").innerHTML="";
+  Object.entries(MARKETS).forEach(([key,m])=>{
+    const b=document.createElement("button");
+    b.className="tab"; b.role="tab"; b.textContent=m.label;
+    b.setAttribute("aria-selected", key===market);
+    b.onclick=()=>{market=key; selectedSectors=new Set(Object.keys(MARKETS[key].sectors)); renderTabs(); renderSectors(); $("out").innerHTML="";};
+    $("tabs").appendChild(b);
+  });
+}
+function renderSectors(){
+  const names=Object.keys(MARKETS[market].sectors);
+  if(selectedSectors.size===0) names.forEach(s=>selectedSectors.add(s));
+  $("sectors").innerHTML="";
+  names.forEach(s=>{
+    const b=document.createElement("button");
+    b.className="pill"; b.textContent=s;
+    b.setAttribute("aria-pressed", selectedSectors.has(s));
+    b.onclick=()=>{ selectedSectors.has(s)?selectedSectors.delete(s):selectedSectors.add(s); renderSectors(); };
+    $("sectors").appendChild(b);
+  });
+}
+function readCfg(){
+  return { useRsi:$("c_rsi").checked, rsiMin:+$("v_rsi").value||50,
+           useBreak:$("c_break").checked, usePull:$("c_pull").checked, pullPct:+$("v_pull").value||1.5,
+           useRise:$("c_rise").checked };
+}
+const fmt=x=>x>=100?x.toFixed(2):x.toFixed(4);
+
+$("analyzeBtn").onclick=async()=>{
+  const btn=$("analyzeBtn"), out=$("out");
+  const cfg=readCfg();
+  if(!(cfg.useRsi||cfg.useBreak||cfg.usePull||cfg.useRise)){out.innerHTML='<div class="empty">কমপক্ষে একটি শর্ত চালু করুন।</div>';return}
+  const symbols=[]; selectedSectors.forEach(s=>symbols.push(...MARKETS[market].sectors[s]));
+  if(!symbols.length){out.innerHTML='<div class="empty">কমপক্ষে একটি সেক্টর বেছে নিন।</div>';return}
+  btn.disabled=true; btn.textContent="বিশ্লেষণ চলছে…";
+  try{
+    const results=[];
+    for(const s of symbols){
+      try{ const c=await getCandles(s,market); results.push({sym:s,...analyze(c,cfg)}); }
+      catch(e){ console.error(s,e); }
+    }
+    results.sort((a,b)=>b.passed-a.passed || (b.rsi||0)-(a.rsi||0));
+    const full=results.filter(r=>r.full).length;
+    let html=`<div class="summary"><div><b>${results.length}</b>স্ক্যান</div><div><b style="color:var(--go)">${full}</b>সব শর্ত মিলেছে</div><div><b>${results.length-full}</b>বাকি</div></div>`;
+    if(!results.length) html+='<div class="empty">কোনো ডেটা পাওয়া যায়নি।</div>';
+    results.forEach(r=>{
+      const cls=r.full?"full":(r.passed>0?"part":"none");
+      const tags=Object.values(r.checks).filter(c=>c.on).map(c=>`<span class="tag ${c.pass?'ok':'no'}">${c.pass?'✓':'✗'} ${c.label}</span>`).join("");
+      html+=`<div class="res ${cls}">
+        <div class="row"><span class="sym">${r.sym}</span><span class="px">${fmt(r.price)} <small style="color:${r.chg>=0?'var(--go)':'var(--bad)'}">${r.chg>=0?'+':''}${r.chg.toFixed(2)}%</small></span></div>
+        <div class="meta"><span>Resistance ${fmt(r.resistance)}</span><span>Support ${fmt(r.support)}</span><span>${r.passed}/${r.total} শর্ত</span></div>
+        <div class="tags">${tags}</div></div>`;
+    });
+    out.innerHTML=html;
+  } finally { btn.disabled=false; btn.textContent="Analyze"; }
+};
+
+/* =====================================================
+   6) লগইন + VIP মেয়াদ যাচাই
+   Firestore: collection "users" → document id = user uid
+   ফিল্ড: vipUntil (number, মিলিসেকেন্ড টাইমস্ট্যাম্প)
+   ===================================================== */
+function show(view){ ["loginView","expiredView","appView"].forEach(v=>$(v).classList.toggle("hidden", v!==view)); }
+
+function startApp(vipText){
+  $("vipChip").textContent=vipText;
+  $("demoBar").classList.toggle("hidden", false);
+  selectedSectors=new Set(Object.keys(MARKETS[market].sectors));
+  renderTabs(); renderSectors(); show("appView");
+}
+
+if(DEMO_MODE){
+  $("logoutBtn").classList.add("hidden");
+  $("vipChip").textContent="Demo";
+  startApp("Demo");
+}else{
+  firebase.initializeApp(firebaseConfig);
+  const auth=firebase.auth(), db=firebase.firestore();
+  $("loginBtn").onclick=async()=>{
+    $("loginErr").textContent="";
+    try{ await auth.signInWithEmailAndPassword($("email").value.trim(), $("pass").value); }
+    catch(e){ $("loginErr").textContent="ইমেইল বা পাসওয়ার্ড ভুল।"; }
+  };
+  const out=()=>auth.signOut();
+  $("logoutBtn").onclick=out; $("expLogout").onclick=out;
+
+  auth.onAuthStateChanged(async user=>{
+    if(!user){ show("loginView"); return; }
+    try{
+      const snap=await db.collection("users").doc(user.uid).get();
+      const until=snap.exists ? Number(snap.data().vipUntil||0) : 0;
+      if(Date.now()>until){ show("expiredView"); return; }
+      const days=Math.ceil((until-Date.now())/86400000);
+      startApp(`VIP · ${days} দিন বাকি`);
+      $("demoBar").classList.remove("hidden");
+    }catch(e){ $("loginErr").textContent="মেয়াদ যাচাই করা যায়নি।"; show("loginView"); }
+  });
+}
+</script>
+</body>
+</html>
